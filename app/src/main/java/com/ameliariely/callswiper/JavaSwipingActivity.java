@@ -7,15 +7,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class JavaSwipingActivity extends AppCompatActivity {
-
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
@@ -58,19 +63,17 @@ public class JavaSwipingActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return BigCallFragment.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
             return 3;
         }
+
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
+    public static class BigCallFragment extends Fragment {
 
         private static String ARG_SECTION_NUMBER = "section_number";
 
@@ -78,12 +81,19 @@ public class JavaSwipingActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_swiping, container, false);
-            ((TextView) rootView.findViewById(R.id.section_label)).setText("Hello from fragment " + getArguments().getInt(ARG_SECTION_NUMBER));
+            ((TextView) rootView.findViewById(R.id.section_label)).setText("Mom" + getArguments().getInt(ARG_SECTION_NUMBER));
+            ImageView circleButton = rootView.findViewById(R.id.circle_button);
+            circleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "YOU CLICKED ME BRO", Toast.LENGTH_SHORT).show();
+                }
+            });
             return rootView;
         }
 
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
+        public static BigCallFragment newInstance(int sectionNumber) {
+            BigCallFragment fragment = new BigCallFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
