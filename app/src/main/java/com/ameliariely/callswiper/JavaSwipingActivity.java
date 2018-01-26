@@ -55,6 +55,7 @@ public class JavaSwipingActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         DbHelper dbHelper = ((CallSwiperApp) getApplication()).getDbHelper();
+        //TODO subscribe to getMoms and set adapter items
 
         // Set up the ViewPager with the sections adapter.
         ViewPager container = findViewById(R.id.container);
