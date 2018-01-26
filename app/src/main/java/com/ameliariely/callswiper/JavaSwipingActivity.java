@@ -21,6 +21,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ameliariely.callswiper.data.DbHelper;
+import com.ameliariely.callswiper.data.model.Mom;
+
+import java.util.ArrayList;
+
 
 public class JavaSwipingActivity extends AppCompatActivity {
     static {
@@ -49,6 +54,8 @@ public class JavaSwipingActivity extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        DbHelper dbHelper = ((CallSwiperApp) getApplication()).getDbHelper();
+
         // Set up the ViewPager with the sections adapter.
         ViewPager container = findViewById(R.id.container);
         container.setAdapter(mSectionsPagerAdapter);
@@ -61,8 +68,14 @@ public class JavaSwipingActivity extends AppCompatActivity {
      */
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        private ArrayList moms;
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+        }
+
+        public void setMomList(ArrayList<Mom> moms) {
+            this.moms = moms;
         }
 
         @Override
@@ -74,7 +87,7 @@ public class JavaSwipingActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return moms.size();
         }
 
     }
