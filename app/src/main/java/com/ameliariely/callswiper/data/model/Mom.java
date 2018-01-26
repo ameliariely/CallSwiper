@@ -8,6 +8,11 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "moms")
 public class Mom {
 
+    public Mom(int phone, String name) {
+        this.phone = phone;
+        this.name = name;
+    }
+
     @PrimaryKey
     private int phone;
 
