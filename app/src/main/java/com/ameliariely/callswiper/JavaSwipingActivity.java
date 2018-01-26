@@ -1,5 +1,7 @@
 package com.ameliariely.callswiper;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -86,7 +88,9 @@ public class JavaSwipingActivity extends AppCompatActivity {
             circleButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "YOU CLICKED ME BRO", Toast.LENGTH_SHORT).show();
+                    String url = "tel:3334444";
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
+                    startActivity(intent);
                 }
             });
             return rootView;
