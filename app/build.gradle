@@ -9,10 +9,11 @@ android {
     defaultConfig {
         applicationId "com.ameliariely.callswiper"
         minSdkVersion 24
-        targetSdkVersion 27
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
