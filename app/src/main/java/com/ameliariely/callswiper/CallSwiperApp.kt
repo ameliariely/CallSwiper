@@ -15,9 +15,9 @@ class CallSwiperApp : Application() {
         val appDatabase = Room.databaseBuilder(applicationContext,
                 AppDatabase::class.java, "callMomDatabase").build()
         dbHelper = DbHelper(appDatabase)
-        dbHelper.addMom(Mom(12345, "Fake Mom 1"))
-        dbHelper.addMom(Mom(83274, "Fake Mom 2"))
-        dbHelper.addMom(Mom(23948, "Fake Mom 3"))
+        dbHelper.addMom(Mom("5126669312", "Fake Mom 1"))
+        dbHelper.addMom(Mom("83274", "Fake Mom 2"))
+        dbHelper.addMom(Mom("23948", "Fake Mom 3"))
     }
 
 }

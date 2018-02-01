@@ -4,26 +4,28 @@ package com.ameliariely.callswiper.data.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 @Entity(tableName = "moms")
 public class Mom {
 
-    public Mom(int phone, String name) {
+    public Mom(@NonNull String phone, String name) {
         this.phone = phone;
         this.name = name;
     }
 
     @PrimaryKey
-    private int phone;
+    @NonNull
+    private String phone = "";
 
     @ColumnInfo(name = "name")
     private String name;
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

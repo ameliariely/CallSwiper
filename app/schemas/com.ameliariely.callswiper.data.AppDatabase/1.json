@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d5fb0f70d790e4defd77fa7d927dce85",
+    "identityHash": "8aea041be2038206e75bd928aea0b43e",
     "entities": [
       {
         "tableName": "moms",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`phone` INTEGER NOT NULL, `name` TEXT, PRIMARY KEY(`phone`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`phone` TEXT NOT NULL, `name` TEXT, PRIMARY KEY(`phone`))",
         "fields": [
           {
             "fieldPath": "phone",
             "columnName": "phone",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -33,7 +33,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d5fb0f70d790e4defd77fa7d927dce85\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8aea041be2038206e75bd928aea0b43e\")"
     ]
   }
 }
