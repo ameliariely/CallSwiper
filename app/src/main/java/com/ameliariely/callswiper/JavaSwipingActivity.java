@@ -25,6 +25,12 @@ import com.ameliariely.callswiper.data.DbHelper;
 import com.ameliariely.callswiper.data.model.Mom;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class JavaSwipingActivity extends AppCompatActivity {
@@ -40,8 +46,9 @@ public class JavaSwipingActivity extends AppCompatActivity {
      * may be best to switch to a
      * [android.support.v4.app.FragmentStatePagerAdapter].
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter sectionsPagerAdapter;
     private final static int MY_PERMISSIONS_REQUEST_CALL = 456;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +59,23 @@ public class JavaSwipingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         DbHelper dbHelper = ((CallSwiperApp) getApplication()).getDbHelper();
-        //TODO subscribe to getMoms and set adapter items
+        //TODO should I add this to a composite disposable?
+        dbHelper.getMoms()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Mom>>() {
+                    @Override
+                    public void accept(List<Mom> moms) throws Exception {
+                        sectionsPagerAdapter.setMomList(new ArrayList<>(moms));
+                    }
+                });
 
         // Set up the ViewPager with the sections adapter.
         ViewPager container = findViewById(R.id.container);
-        container.setAdapter(mSectionsPagerAdapter);
+        container.setAdapter(sectionsPagerAdapter);
 
     }
 
@@ -69,21 +85,22 @@ public class JavaSwipingActivity extends AppCompatActivity {
      */
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private ArrayList moms;
+        private ArrayList<Mom> moms = new ArrayList<>();
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        public void setMomList(ArrayList<Mom> moms) {
+        void setMomList(ArrayList<Mom> moms) {
             this.moms = moms;
+            notifyDataSetChanged();
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return BigCallFragment.newInstance(position + 1);
+            return BigCallFragment.newInstance(moms.get(position));
         }
 
         @Override
@@ -95,13 +112,14 @@ public class JavaSwipingActivity extends AppCompatActivity {
 
     public static class BigCallFragment extends Fragment {
 
-        private static String ARG_SECTION_NUMBER = "section_number";
+        private static String ARG_NAME = "ARG_NAME";
+        private static String ARG_PHONE = "ARG_PHONE";
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_swiping, container, false);
-            ((TextView) rootView.findViewById(R.id.section_label)).setText("Mom" + getArguments().getInt(ARG_SECTION_NUMBER));
+            ((TextView) rootView.findViewById(R.id.section_label)).setText("Mom" + getArguments().getString(ARG_NAME));
             ImageView circleButton = rootView.findViewById(R.id.circle_button);
             circleButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -123,7 +141,7 @@ public class JavaSwipingActivity extends AppCompatActivity {
         }
 
         private void placeCall() {
-            String url = "tel:3334444";
+            String url = "tel:" + getArguments().getString(ARG_PHONE);
             Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
             startActivity(intent);
         }
@@ -148,10 +166,11 @@ public class JavaSwipingActivity extends AppCompatActivity {
             }
         }
 
-        public static BigCallFragment newInstance(int sectionNumber) {
+        public static BigCallFragment newInstance(Mom mom) {
             BigCallFragment fragment = new BigCallFragment();
             Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putString(ARG_NAME, mom.getName());
+            args.putString(ARG_PHONE, mom.getPhone());
             fragment.setArguments(args);
             return fragment;
         }
