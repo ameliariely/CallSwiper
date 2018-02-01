@@ -28,4 +28,6 @@ task clean(type: Delete) {
 
 ext {
     roomVersion = '1.0.0'
+    rxjavaVersion = '2.1.7'
+    rxandroidVersion = '2.0.1'
 }
